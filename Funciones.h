@@ -18,6 +18,7 @@ char** MateriasDisponibles();
 void ImprimirMateriasHorarios();
 void imprimirRecomendacionesEstudio();
 void Matricular(char*** cronograma, char** materiasDisponibles);
+int* retornaHorario(char dia, int hora);
 void search_by_code(char* filename, int code);
 
 /* TODO: Limpiar casa y revisar estrategias.
@@ -34,7 +35,7 @@ int mostrarMenu(){
         cout<<"\t\t| MENÚ PRINCIPAL |\n";
         cout<<"\t\t................."<<endl;
         cout<<"\t1. Para registrar cursos #1."<<endl;
-        cout<<"\t2. Para registrar horarios #2."<<endl;
+        cout<<"\t2. Para ver cronograma #2."<<endl;
         cout<<"\t3. Ver Horarios y Materias #3."<<endl;
         cout<<"\t4. Ver codígos disponibles #4"<<endl;
         cout<<"\t5. Matricular #5"<<endl;
@@ -53,7 +54,6 @@ int mostrarMenu(){
     // Retornar la opción seleccionada
     return opcion;
 }
-
 int asignarHorarios() {
     /*TODO: Aprender a utilizar el enum de c++,
      *      Lo que se quería hacer era que al preguntar por un día
@@ -87,7 +87,6 @@ int asignarHorarios() {
     // Retornar la opción seleccionada
     return opcion;
 }
-
 int registrarHorarios(int codigo) {
     char diaUno;
     int horaInicio=0, horaFinal=0;
@@ -189,16 +188,15 @@ int registrarCursos(){
     }
     return 0;
 }
-
 char*** cronograma(){
     int n = 10; // número de filas
     int m = 8; // número de columnas
     int charMax = 10; //
 
-    char diasSemana[8][10] = { "        ",  "Lunes    ",
-                               "Martes  ",  "Miercoles",
-                               "Jueves  ",  "Viernes",
-                               "Sabado  ",  "Domingo"};
+    char diasSemana[8][10] = { "Hora/Dia",  "Lunes",
+                               "Martes",  "Miercoles",
+                               "Jueves",  "Viernes",
+                               "Sabado",  "Domingo"};
     char bloquesDias[10][10] = { "    ",  "6-8",
                                  "8-10",  "10-12",
                                  "12-14", "14-16",
@@ -249,7 +247,6 @@ char*** cronograma(){
     }
     delete[] matriz;
 }
-
 char** MateriasDisponibles(){
     /*
      * TODO: Cambiar string por buffer de char.
@@ -286,13 +283,7 @@ char** MateriasDisponibles(){
     }
 
     return MateriasDisponibles1;
-    for (int i = 0; i < 10; i++) {
-        delete[] MateriasDisponibles1[i];
-    }
-    delete[] MateriasDisponibles1;
 }
-
-
 char** HorariosDisponibles(int IntCodigo){
     /*
      * TODO: Cambiar string por buffer de char.
@@ -319,10 +310,6 @@ char** HorariosDisponibles(int IntCodigo){
             getline(ss, DiaDos, ';');
             getline(ss, Horario2, ';');
             int caracter=0;
-
-            cout<< (codigo)<<endl;
-            char* charcodigo = new char[10];
-            charcodigo[] = "alejandro";
             while(codigo[caracter] != '\0' && codigo == enteroAChar(IntCodigo))
             {
                 HorarioDisponibles1[materia][caracter] = codigo[caracter];
@@ -336,15 +323,10 @@ char** HorariosDisponibles(int IntCodigo){
       cout << "No se pudo abrir el archivo\n";
     }
     return HorarioDisponibles1;
-    for (int i = 0; i < 10; i++) {
-        delete[] HorarioDisponibles1[i];
-    }
-    delete[] HorarioDisponibles1;
 }
-
 void imprimirMatriz(char** matriz){
     for (int i = 0; i < 10; i++) {
-        cout << i << '-'  << matriz[i]<<endl;
+        cout << i << '-' << matriz[i]<<endl;
     }
 }
 void ImprimirMateriasHorarios(){
@@ -374,7 +356,7 @@ void ImprimirMateriasHorarios(){
         cout << "Nombre: " << nombre << endl;
         cout << "Creditos: " << creditos << endl;
         cout << "Horas de clase: " << horas_clase << endl;
-        cout << "Horas de laboratorio: " << horas_lab << endl;
+        cout << "Horas de tabajo Independiente: " << horas_lab << endl;
       }
       archivo.close();
     }
@@ -411,8 +393,7 @@ void ImprimirMateriasHorarios(){
                 "Para Horarios disponibles\n";
   }
 }
-
-int* retornaArreglo(char dia) {
+int* retornaHorario(char dia, int hora){
     int* horario = new int[2];
 
     switch (dia)
@@ -448,52 +429,309 @@ int* retornaArreglo(char dia) {
     default:
         cout<<"opcion no valida"<<endl;
     }
+
+    switch (hora)
+    {
+    case 6:{
+        horario[1] = 1;
+        break;
+    }
+    case 8:{
+        horario[1] = 2;
+        break;
+    }
+    case 10:{
+        horario[1] = 3;
+        break;
+    }
+    case 12:{
+        horario[1] = 4;
+        break;
+    }
+    case 14:{
+        horario[1] = 5;
+        break;
+    }
+    case 16:{
+        horario[1] = 6;
+        break;
+    }
+    case 18:{
+        horario[1] = 7;
+        break;
+    }
+    case 20:{
+        horario[1] = 8;
+        break;
+    }
+    case 22:{
+        horario[1] = 9;
+        break;
+    }
+    default:
+        cout<<"opcion no valida"<<endl;
+    }
     return horario;
 }
-
 char* enteroAChar(int numero) {
     char* cadena = new char[20]; // Se reserva memoria para la cadena (20 caracteres es un tamaño arbitrario)
     sprintf(cadena, "%d", numero); // Se convierte el número en una cadena de caracteres
     return cadena;
 }
-
-void Matricular(char*** cronograma, char** materiasDisponibles, char** AUXmateriasDisponibles){
+void Matricular(char*** cronograma, char** materiasDisponibles){
     cout<<"RECUERDE LOS CODIGOS DISPONIBLES PARA MATRICULAR"<<endl;
     imprimirMatriz(materiasDisponibles);
-    int numeroMaterias = 0;
+    int numeroMaterias = 0 ;
+
     while(*(materiasDisponibles[numeroMaterias]) != '\0'){
         numeroMaterias++;
     }
     numeroMaterias = numeroMaterias - 1;
     cout<<"\nActualmente usted cuenta con: "<<numeroMaterias<<" Materias Disponibles."<<endl;
     bool matriculando = true;
-    int codigo, horario;
-    while(matriculando==true){
-        codigo = 0; horario=0;
-        while(codigo<1 || codigo>numeroMaterias){
-        cout<<"Ingrese la posición del codigo a matricular (1-"<<numeroMaterias<<')'<<endl;
-        cin>>codigo;}
+    char matricular = '0';
+    int codigo;
 
-        cout<<"Escoja un horario de las opciones disponibles"<<endl;
-        cin>>horario;
-    }
-}
-
-
-void search_by_code(char* filename, int code) {
-    ifstream infile(filename);
-    int c, r1s, r1e, r2s, r2e;
-    char d1, d2, sep;
-    while (infile >> c >> sep >> d1 >> sep >> r1s >> sep >> r1e >> sep >> d2 >> sep >> r2s >> sep >> r2e) {
-        if (c == code) {
-            cout<< c << ";" << d1 << ";" << r1s << "-" << r1e << ";" << d2 << ";" << r2s << "-" << r2e << std::endl;
+    while(matriculando==true)
+    {
+        codigo = 0;
+        while(codigo<1 || codigo>numeroMaterias)
+        {
+            cout<<"Ingrese la posición del codigo a matricular (1-"<<numeroMaterias<<')'<<endl;
+            cin>>codigo;
         }
+
+        char* toMatricular = new char[10];
+        toMatricular = materiasDisponibles[codigo];
+        cout << "El codigo a Matricukar"<<toMatricular<<endl;
+
+        /* TODO: Crear función */
+        ifstream archivo1("horarios_disponibles.csv");
+        if (archivo1) {
+            cout <<"\n------------HORARIOS------------\n";
+            const int tamano_buffer = 1024;
+            char buffer[tamano_buffer];
+            while (archivo1.getline(buffer, tamano_buffer)) {
+                string linea(buffer);
+                string codigo, DiaUno, Horario1, DiaDos, Horario2;
+                stringstream ss(linea);
+                getline(ss, codigo, ';');
+                if(toMatricular == codigo){
+                    getline(ss, DiaUno, ';');
+                    getline(ss, Horario1, ';');
+                    getline(ss, DiaDos, ';');
+                    getline(ss, Horario2, ';');
+                    cout << "\n______________________________________"
+                            "________________________________________"<<endl;
+                    cout << "Codigo: " << codigo << endl;
+                    cout << "Día Uno: " << DiaUno << endl;
+                    cout << "Horario: " << Horario1 << endl;
+                    cout << "Día Dos: " << DiaDos << endl;
+                    cout << "Día Dos: " << Horario2 << endl;
+                    do {
+                        cout << "¿DESEA MATRICULAR ESTA MATERIA? (s/n)";
+                        cin >> matricular;
+                    }while(matricular != 's' && matricular !='n');
+                    if(matricular=='s'){
+                        cout<< "Este es el dia uno: "<<DiaUno[0]<<endl;
+                        int* horario1 = new int[2];
+                        int* horario2 = new int[2];
+                        char diaUno = DiaUno[0];
+                        char diaDos = DiaDos[0];
+                        int hora = int(Horario1[0]-48);
+                        horario1 = retornaHorario(diaUno, hora);
+                        horario2 = retornaHorario(diaDos, hora);
+                        cronograma[*(horario1+1)][*horario1] = toMatricular;
+                        cronograma[*(horario2+1)][*horario2] = toMatricular;
+
+                        /* TODO: Imprimir esta matriz
+                       *  se puede convertir en una función.*/
+                        int n = 10; // número de filas
+                        int m = 8; // número de columnas
+
+                        for (int i = 0; i < n; i++) {
+                            for (int j = 0; j < m; j++){
+                                cout <<"\t"<<cronograma[i][j];
+                            }
+                            cout << "\n______________________________________"
+                                    "________________________________________"
+                                    "________________________________________"
+                                    "________"<<endl;
+                            cout << endl;
+                        }
+                    }else{
+                        char continuar = 'x';
+                        do{
+                        cout<<"¿Desea continuar Matriculando? (s/n)"<<endl;
+                        cin>>continuar;
+                        }while(continuar != 's' && continuar!='n');
+                        if(continuar == 'n'){
+                            matriculando = false;
+                        }
+                    }
+                }else{
+                    continue;
+                }
+                matricular = 'x';
+            }
+        }archivo1.close();
     }
 }
-void imprimirRecomendacionesEstudio(){
+void mostrarRecomendaciones() {
     /* TODO:
      * Leer archivo "recomendaciones de Estduio"
      * e imprimir para el usuario.
+     * TODO: Mover a buffer de char
     */
+    ifstream archivo("recomendaciones_estudio.txt");
+    if (archivo.is_open()) {
+        string linea;
+        while (getline(archivo, linea)) {
+            cout << linea <<endl;
+        }
+        archivo.close();
+    } else {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
 }
+
+
+
+int sizeChar(char* word){
+    /*Función que se encarga de retornar un entero
+    cuyo valor es la longitud de un conjunto de
+    caracteres*/
+    bool condi = true;
+    int i = 0;
+
+    //Se itera mientras no se encuentre el caracter nulo.
+    while(condi == true){
+        if(word[i] != 0){
+            i++;
+        }else{condi = false;}
+    }return i;
+}
+
+//bool isletter(char a){
+//    /*Funcion qeu se encarga de verificar si el caracter
+//    es una letra*/
+//    if ((a >= 97 && a <= 122) || (a >= 65 && a <= 90))
+//    {
+//        return true;
+//    }else{
+//        return false;
+//    }
+//}
+//bool isWord(char* word, int n){
+//    bool palabra = true;
+//    for(int i = 0; i<n; i++){
+//        palabra = isletter(*(word + i));
+//        if(palabra==false){
+//            break;
+//            return palabra;
+//        }
+//    }return palabra;
+//}
+
+
+
+//bool isnumber(char a){
+//    /*Funcion que se encarga de verificar si el caracter
+//    es un número*/
+//    if (a>=48 && a<=57) return true;
+//    else return false;
+//}
+
+
+
+//int tamano_arreglo_int(int entero){
+//  bool ban = true;
+//  int i=0, residuo=0;
+
+//  while(entero > 0){
+//    residuo = entero % 10;
+//    entero = entero / 10;
+//    i++;
+
+//  }return i;
+//}
+//char* entero_to_caracter(int entero){
+//  int sizeEntero = (tamano_arreglo_int(entero));
+//  char* Cadena = new char[sizeEntero];
+
+//  for(int i=0;i<sizeEntero;i++){
+//    Cadena[sizeEntero-i] = (entero % 10)+48;
+//    entero = entero / 10;
+//  }return Cadena;
+//}
+
+
+
+//bool edit(char* word){
+//    int size=sizeChar(word);
+//    for (int i = 0; i < size; i++){
+//        if (isletter(word[i]) == true){
+//            if (i==0){
+//                if (word[0] >= 97 && word[0] <= 122) word[i] -= 32;
+//            }
+//            else{
+//                if (word[0] >= 65 && word[0] <= 90) word[i] +=32;
+//            }
+//        }
+//        else word[i]=0;
+//        return false;
+//    }
+//    return true;
+//}
+
+//void copiar(char **Origen, char **Destino, int n){
+//  /*
+//  Función que se encarga de copiar de un arreglo bidimensional a otro
+//  */
+//    for (int i = 0; i < n; ++i){
+//        Destino[i] = new char[(sizeChar(Origen[i]))-1];
+//        Destino[i] = Origen[i];
+//    }
+
+//    delete[] Origen;
+//    Origen = nullptr;
+//}
+
+//bool check(char** Arreglo, int n, char* word){
+//    if (n == 0){
+//        return false;
+//    }else{
+//    int sizeWord = sizeChar(word), cont = 0;
+//    for(int i = 0; i < n; ++i){
+//        for(int j = 0; j < (sizeChar(Arreglo[i])-1); j++){
+//            if (Arreglo[i][j] == word[j]){
+//                cont++;
+//            }
+//        }
+//        if(cont == (sizeWord-1)){
+//            return true;
+//        }else {cont=0;}
+//    }
+//    }return false;
+//}
+
+//char** attach(char** Arreglo, char** Almacenar, int* n, char* word){
+//    /* Función que permite agregar registros al arreglo
+//     realizando una copia en otro arreglo bidimensional */
+//    if (check(Arreglo,*n,word) == false){
+//        Almacenar = new char*[*n];
+//        copiar(Arreglo,Almacenar,*n);
+
+//        *n = *n + 1;
+
+//        Arreglo = new char*[*n];
+//        copiar(Almacenar,Arreglo,*n-1);
+
+//        Arreglo[*n-1] = new char[sizeChar(word)];
+//        for (int i = 0; i < sizeChar(word); i++){
+//            Arreglo[*n-1][i] = word[i];
+//        }
+//        Arreglo[*n-1][sizeChar(word)]=0;
+//    }return Arreglo;
+//}
 #endif // FUNCIONES_H

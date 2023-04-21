@@ -1,16 +1,12 @@
-#include <iostream>
 #include "Funciones.h"
-using namespace std;
 
-int main()
-{
+int main(){
     char*** cronograma1;
     char** materiasDisponibles;
-    char** AUXmateriasDisponibles;
-
     int opcion = mostrarMenu();
-    while(opcion!= 0)
-    {
+
+    cout<<"Actualmente su cronograma se encuentra Asi"<<endl;
+    while(opcion!= 0){
         materiasDisponibles = MateriasDisponibles();
         switch (opcion)
         {
@@ -18,34 +14,24 @@ int main()
             registrarCursos();
             break;}
         case 2:{
-            cronograma1 = cronograma();
+            ImprimirMateriasHorarios();
             break;}
         case 3:{
-            ImprimirMateriasHorarios();
-            break;
-        }
-        case 4:{
-            //imprimir la matriz
             cout<<"Códigos de Materias Disponibles: "<<endl;
-            /* TODO: Volver una función para imprimir matrizes.*/
+            /* TODO:
+             * Volver una función para imprimir matrizes.*/
             imprimirMatriz(materiasDisponibles);
-            break;
-        }
+            break;}
+        case 4:{
+            cout<<"Actualmente su cronograma se encuentra Asi"<<endl;
+            cronograma1 = cronograma();
+            Matricular(cronograma1, materiasDisponibles);
+            break;}
         case 5:{
-            cout<<*(HorariosDisponibles(2536302));
-            //materiasDisponibles = MateriasDisponibles();
-            //Matricular(cronograma1, materiasDisponibles, AUXmateriasDisponibles);
-            break;
-        }
-        case 6:{
-            imprimirRecomendacionesEstudio();
-            break;
-        }
+            mostrarRecomendaciones();
+            break;}
         default:
-            cout<<"opcion no valida"<<endl;
-        }
+            cout<<"opcion no valida"<<endl;}
         opcion = mostrarMenu();
-        //materiasDisponibles = MateriasDisponibles();
-    }
-    return 0;
+    }return 0;
 }
